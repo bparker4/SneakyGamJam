@@ -6,6 +6,7 @@ public class HandController : MonoBehaviour {
 
 	Transform tf;
 	SpriteRenderer sprRen;
+	AudioSource audSrc;
 	
 	public GameObject Holding;
 	
@@ -21,6 +22,9 @@ public class HandController : MonoBehaviour {
 	
 	public Sprite HandOpen;
 	public Sprite HandClosed;
+	
+	public AudioClip PickUP;
+	public AudioClip PutDown;
 
 	
 	void OnTriggerEnter2D(Collider2D other){		
@@ -41,6 +45,7 @@ public class HandController : MonoBehaviour {
 		tf = GetComponent<Transform>();
 		sprRen = GetComponent<SpriteRenderer>();
 		CollidingWithMe = new List<GameObject>();
+		audSrc = GetComponent<AudioSource>();
 		
 		prevPos = tf.position;
 	
@@ -100,6 +105,9 @@ public class HandController : MonoBehaviour {
 	
 //PARENT PICKUP-ABLE TO THE HAND
 	private void PickupObject() {
+		audSrc.clip = PickUP;
+		audSrc.Play();
+	
 		if (CollidingWithMe.Count > 0) {
 			foreach (GameObject gO in CollidingWithMe) {
 				if (gO.tag == "CanGrab") {
@@ -117,6 +125,10 @@ public class HandController : MonoBehaviour {
 		
 	}
 	private void DropObject() {
+		audSrc.clip = PutDown;
+		audSrc.Play();
+	
+	
 		if (Holding != null) {
 			tf.DetachChildren();
 			Holding = null;
