@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HandController : MonoBehaviour {
 
 	Transform tf;
 	
+	public GameObject Holding;
+	
+	public float ZLevel;
 	
 	public float StressLevel = 0.0f;
 	
 	private float jitterCoefficient;
 	
 	private Vector3 prevPos;
+	
+	private List<GameObject> CollidingWithMe;
 
 	// Use this for initialization
 	void Start () {
 		tf = GetComponent<Transform>();
+		CollidingWithMe = new List<GameObject>();
 		
 		prevPos = tf.position;
 	
@@ -28,9 +35,31 @@ public class HandController : MonoBehaviour {
 		prevPos = tf.position;
 	}
 	
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "CanGrab") {
+			CollidingWithMe.Add(other.gameObject);
+		}	
+	}
+	void OnTriggerExit2D(Collider2D other) {
+		if (CollidingWithMe.Contains (other.gameObject)) {
+			CollidingWithMe.Remove(other.gameObject);
+		}
+	}
+	
 	private void ControlHand() {
 	
+		if (Input.GetMouseButtonDown(0)) {//LEFT CLICK
+			
+			
+		}
 		
+		if (Input.GetKeyDown(KeyCode.Space)) {//Keep object held if hitting spacebar
+			PickupObject();
+		}
+		
+		if (Input.GetKeyUp(KeyCode.Space)) {//Release object if release spacebar
+			DropObject();
+		}
 	
 		//change Hand position and apply jitters from stress
 		tf.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + Random.Range(-StressLevel, StressLevel),
@@ -46,7 +75,7 @@ public class HandController : MonoBehaviour {
 		
 	}
 	
-	private void RaycastByLayer(string layerName) {
+	private void SpecialMouseRaycast() {
 		Vector3 mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
 		                               Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
 		RaycastHit2D mousePosHit;
@@ -54,5 +83,32 @@ public class HandController : MonoBehaviour {
 		if(mousePosHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity)) {
 			//SelectedTile = mousePosHit.collider.gameObject;
 		}
+	}
+	
+//PARENT PICKUP-ABLE TO THE HAND
+	private void PickupObject() {
+		if (CollidingWithMe.Count > 0) {
+			foreach (GameObject gO in CollidingWithMe) {
+				if (gO.tag == "CanGrab") {
+					gO.GetComponent<Transform>().parent = tf;
+					Holding = gO;
+					
+					break;
+				}
+			}
+		}
+	
+		//Debug.Log("holding");
+		
+		//SpecialMouseRaycast();
+		
+	}
+	private void DropObject() {
+		if (Holding != null) {
+			tf.DetachChildren();
+			Holding = null;
+		}
+	
+		//Debug.Log("dropping");
 	}
 }
