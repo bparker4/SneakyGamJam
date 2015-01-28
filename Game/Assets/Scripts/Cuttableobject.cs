@@ -24,7 +24,7 @@ public class Cuttableobject : MonoBehaviour {
 	
 	private void CheckCut() {
 		if (isCut == true) {
-			Destroy (GameObject);
+			Destroy (gameObject);
 		}
 	}
 	
