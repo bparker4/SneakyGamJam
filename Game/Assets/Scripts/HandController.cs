@@ -33,8 +33,8 @@ public class HandController : MonoBehaviour {
 		
 	
 		//change Hand position and apply jitters from stress
-		tf.position = new Vector3(Input.mousePosition.x + Random.Range(-StressLevel, StressLevel),
-								  Input.mousePosition.y + Random.Range(-StressLevel/2.0f, StressLevel/2.0f),
+		tf.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + Random.Range(-StressLevel, StressLevel),
+								  Camera.main.ScreenToWorldPoint(Input.mousePosition).y + Random.Range(-StressLevel/2.0f, StressLevel/2.0f),
 								  tf.position.z);
 	}
 	
