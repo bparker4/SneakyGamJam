@@ -18,6 +18,20 @@ public class HandController : MonoBehaviour {
 	
 	private List<GameObject> CollidingWithMe;
 
+	
+	void OnTriggerEnter2D(Collider2D other){		
+		if (other.tag == "CanGrab") {
+			CollidingWithMe.Add(other.gameObject);
+		}	
+	}
+	
+	void OnTriggerExit2D(Collider2D other) {
+		if (CollidingWithMe.Contains (other.gameObject)) {
+			CollidingWithMe.Remove(other.gameObject);
+		}
+		
+	}
+
 	// Use this for initialization
 	void Start () {
 		tf = GetComponent<Transform>();
@@ -34,17 +48,7 @@ public class HandController : MonoBehaviour {
 		
 		prevPos = tf.position;
 	}
-	
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "CanGrab") {
-			CollidingWithMe.Add(other.gameObject);
-		}	
-	}
-	void OnTriggerExit2D(Collider2D other) {
-		if (CollidingWithMe.Contains (other.gameObject)) {
-			CollidingWithMe.Remove(other.gameObject);
-		}
-	}
+
 	
 	private void ControlHand() {
 	
