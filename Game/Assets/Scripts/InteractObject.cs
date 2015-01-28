@@ -13,7 +13,7 @@ public class InteractObject : MonoBehaviour {
 	void Start () {
 		tf = GetComponent<Transform>();
 		
-		InteractVol = tf.FindChild("InteractZone");
+		InteractVol = tf.FindChild("InteractZone").gameObject;
 	}
 	
 	// Update is called once per frame
