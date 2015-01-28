@@ -4,6 +4,8 @@ using System.Collections;
 public class Cuttableobject : MonoBehaviour {
 
 	Transform tf;
+	
+	public bool SafeToCut = true;
 
 	// Use this for initialization
 	void Start () {
