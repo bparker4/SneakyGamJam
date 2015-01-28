@@ -53,7 +53,9 @@ public class HandController : MonoBehaviour {
 	private void ControlHand() {
 	
 		if (Input.GetMouseButtonDown(0)) {//LEFT CLICK
-			
+			if (Holding != null) {
+				Holding.GetComponent<InteractObject>().TriggerInteraction();
+			}
 			
 		}
 		
