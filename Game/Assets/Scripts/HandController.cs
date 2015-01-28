@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class HandController : MonoBehaviour {
 
 	Transform tf;
+	SpriteRenderer sprRen;
 	
 	public GameObject Holding;
 	
@@ -17,6 +18,9 @@ public class HandController : MonoBehaviour {
 	private Vector3 prevPos;
 	
 	private List<GameObject> CollidingWithMe;
+	
+	public Sprite HandOpen;
+	public Sprite HandClosed;
 
 	
 	void OnTriggerEnter2D(Collider2D other){		
@@ -35,6 +39,7 @@ public class HandController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		tf = GetComponent<Transform>();
+		sprRen = GetComponent<SpriteRenderer>();
 		CollidingWithMe = new List<GameObject>();
 		
 		prevPos = tf.position;
@@ -61,10 +66,12 @@ public class HandController : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.Space)) {//Keep object held if hitting spacebar
 			PickupObject();
+			sprRen.sprite = HandClosed;
 		}
 		
 		if (Input.GetKeyUp(KeyCode.Space)) {//Release object if release spacebar
 			DropObject();
+			sprRen.sprite = HandOpen;
 		}
 	
 		//change Hand position and apply jitters from stress
